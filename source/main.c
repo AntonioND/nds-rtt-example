@@ -108,10 +108,10 @@ int main(void)
 		     DISPLAY_SPR_2D_BMP_256);
 	REG_BG0CNT |= BG_PRIORITY_1;
 	REG_BG2CNT = BG_BMP16_256x256 | BG_PRIORITY_0;
-	REG_BG2PA = 256;
+	REG_BG2PA = 1 << 8;
 	REG_BG2PB = 0;
 	REG_BG2PC = 0;
-	REG_BG2PD = 256;
+	REG_BG2PD = 1 << 8;
 	REG_BG2X = 0;
 	REG_BG2Y = 0;
 #else
@@ -125,10 +125,14 @@ int main(void)
 	consoleInit(NULL, 1, BgType_Text4bpp, BgSize_T_256x256, 15, 0, false,
 		    true);
 	BG_PALETTE_SUB[255] = 0xFFFF;
-	iprintf("     RTT Demo by AntonioND");
-	iprintf("\n\n  antoniond.drunkencoders.com");
-	iprintf("\n\n\n\nA/B: Scale small cube.");
-	iprintf("\nPad: Rotate small cube.");
+	iprintf("     RTT Demo by AntonioND\n");
+	iprintf("\n");
+	iprintf("    http://www.skylyrac.net\n");
+	iprintf("\n");
+	iprintf("\n");
+	iprintf("\n");
+	iprintf("A/B: Scale small cube\n");
+	iprintf("Pad: Rotate small cube");
 	iprintf("\x1b[23;0HThanks to DiscoStew. ;)");
 
 	glInit();
@@ -192,9 +196,10 @@ int main(void)
 #ifdef USE_3D_MODE
 			vramSetBankC(VRAM_C_MAIN_BG_0x06000000);
 #endif
-			// Texture goes to VRAM_B
-			REG_DISPCAPCNT = DCAP_BANK(1) | DCAP_ENABLE
-				       | DCAP_SIZE(3) | DCAP_SRC(1);
+			REG_DISPCAPCNT = DCAP_BANK(1) // Destination is VRAM_B
+				       | DCAP_SIZE(3) // Size is 256x192
+				       | DCAP_SRC(1)  // Source A = 3D screen
+				       | DCAP_ENABLE;
 
 			glViewport(0, 0, 255, 192);
 
@@ -208,6 +213,7 @@ int main(void)
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 
+			// Blue background
 			glClearColor(0, 0, 31, 31);
 
 			gluLookAt(0.0, 0.0, 1.0,	// camera position
@@ -233,9 +239,10 @@ int main(void)
 #ifdef USE_3D_MODE
 			vramSetBankC(VRAM_C_LCD);
 #endif
-			// Scene goes to VRAM_C
-			REG_DISPCAPCNT = DCAP_BANK(2) | DCAP_ENABLE
-				       | DCAP_SIZE(3) | DCAP_SRC(1);
+			REG_DISPCAPCNT = DCAP_BANK(2) // Destination is VRAM_C
+				       | DCAP_SIZE(3) // Size is 256x192
+				       | DCAP_SRC(1)  // Source A = 3D screen
+				       | DCAP_ENABLE;
 
 			glViewport(0, 64, 128, 192);
 
@@ -250,6 +257,7 @@ int main(void)
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 
+			// Green background
 			glClearColor(0, 31, 0, 31);
 
 			gluLookAt(0.0, 0.0, 1.0,	// camera position
