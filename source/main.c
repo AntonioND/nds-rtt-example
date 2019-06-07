@@ -15,7 +15,8 @@
 // arm9/resources texture.bin is a raw 128x128 16 bit image.
 #include "texture_bin.h"
 
-// If defined, demo uses MODE_5_3D, else MODE_FB2
+// When the following define is enabled, the demo uses MODE_5_3D. When it isn't,
+// it uses MODE_FB2.
 #define USE_3D_MODE
 
 // Vertices for the cube
