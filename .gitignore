@@ -1,4 +1,4 @@
 build/
-rtt-example.arm9
-rtt-example.elf
-rtt-example.nds
+nds-rtt-example.arm9
+nds-rtt-example.elf
+nds-rtt-example.nds
