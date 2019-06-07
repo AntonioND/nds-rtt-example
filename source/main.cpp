@@ -138,7 +138,7 @@ int main()
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);
 	vramSetBankH(VRAM_H_SUB_BG);
 	REG_BG0CNT_SUB = BG_MAP_BASE(15);
-	consoleInit(0,1, BgType_Text4bpp, BgSize_T_256x256, 15,0, false);
+	consoleInit(NULL,1, BgType_Text4bpp, BgSize_T_256x256, 15,0, false,true);
 	BG_PALETTE_SUB[255] = 0xFFFF;
 	iprintf("     RTT Demo by AntonioND");
 	iprintf("\n\n  antoniond.drunkencoders.com");
