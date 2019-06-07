@@ -6,6 +6,8 @@
 //
 // http://www.skylyrac.net/
 // https://github.com/AntonioND/
+//
+// Email: antonio_nd at outlook dot com
 
 #include <stdio.h>
 
@@ -18,6 +20,31 @@
 // When the following define is enabled, the demo uses MODE_5_3D. When it isn't,
 // it uses MODE_FB2.
 #define USE_3D_MODE
+
+// This is an example of Render To Texture.
+//
+// It uses VRAM banks as follows:
+//
+// - VRAM_A: Used for regular textures
+// - VRAM_B: Used for the rendered texture
+// - VRAM_C: Used to capture the final 3D scene
+//
+// The BGs of the main screen are used as follows:
+//
+// - If USE_3D_MODE is defined, it alternates between:
+//
+//   - BG 0: Rendered texture output, hidden under BG 2.
+//   - BG 2: Renders the contents of VRAM_C captured during the previous frame.
+//
+//   and:
+//
+//   - BG 0: Displays the currently drawn 3D scene, which is captured to VRAM_C.
+//
+// - If USE_3D_MODE is not defined:
+//
+//   - MODE_FB2 renders the contents of VRAM_C as a bitmap on the screen. This
+//     makes it easier to setup, but it's less flexible as you can't use other
+//     layers on top of it.
 
 // Vertices for the cube
 v16 CubeVectors[] = {
