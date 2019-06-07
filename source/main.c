@@ -2,7 +2,7 @@
 //
 // Copyright (c) 2008, 2019, Antonio Niño Díaz
 //
-// Render To Texture example
+// Render to Texture example
 //
 // http://www.skylyrac.net/
 // https://github.com/AntonioND/
@@ -21,8 +21,6 @@
 // it uses MODE_FB2.
 #define USE_3D_MODE
 
-// This is an example of Render To Texture.
-//
 // It uses VRAM banks as follows:
 //
 // - VRAM_A: Used for regular textures
