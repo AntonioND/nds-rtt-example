@@ -233,6 +233,14 @@ int main(void)
 			glRotateX(rx);
 			glRotateY(ry);
 
+			// When calling glBindTexture(), the GFX_TEX_FORMAT
+			// command is only sent when the new texture isn't
+			// currently active. By calling it with an invalid
+			// texture we make sure that any future call to
+			// glBindTexture() will actually send that command and
+			// replace the manual command below.
+			glBindTexture(0, -1);
+
 			// The captured texture is 256x192, stored in VRAM_B,
 			// and is in RGBA format. It is needed to use 256x256 as
 			// size, as only power of two sizes are supported.
