@@ -196,10 +196,17 @@ int main(void)
 #ifdef USE_3D_MODE
 			vramSetBankC(VRAM_C_MAIN_BG_0x06000000);
 #endif
-			REG_DISPCAPCNT = DCAP_BANK(1) // Destination is VRAM_B
-				       | DCAP_SIZE(3) // Size is 256x192
-				       | DCAP_SRC(1)  // Source A = 3D screen
-				       | DCAP_ENABLE;
+			REG_DISPCAPCNT =
+				// Destination is VRAM_B
+				DCAP_BANK(DCAP_BANK_VRAM_B) |
+				// Size = 256x192
+				DCAP_SIZE(DCAP_SIZE_256x192) |
+				// Capture source A only
+				DCAP_MODE(DCAP_MODE_A) |
+				// Source A = 3D rendered image
+				DCAP_SRC_A(DCAP_SRC_A_3DONLY) |
+				// Enable capture
+				DCAP_ENABLE;
 
 			glViewport(0, 0, 255, 192);
 
@@ -216,9 +223,9 @@ int main(void)
 			// Blue background
 			glClearColor(0, 0, 31, 31);
 
-			gluLookAt(0.0, 0.0, 1.0,	// camera position
-				  0.0, 0.0, 0.0,	// look at
-				  0.0, 1.0, 0.0);	// up
+			gluLookAt(0.0, 0.0, 1.0,	// Camera position
+				  0.0, 0.0, 0.0,	// Look at
+				  0.0, 1.0, 0.0);	// Up
 
 			// Move cube away from the camera
 			glTranslate3f32(0, 0, floattof32(-1));
@@ -226,10 +233,13 @@ int main(void)
 			glRotateX(rx);
 			glRotateY(ry);
 
+			// The captured texture is 256x192, stored in VRAM_B,
+			// and is in RGBA format. It is needed to use 256x256 as
+			// size, as only power of two sizes are supported.
 			GFX_TEX_FORMAT = (GL_RGBA << 26)
-				       | ((TEXTURE_SIZE_128) << 20)
-				       | ((TEXTURE_SIZE_128) << 23)
-				       | (((int)VRAM_B) >> 3);
+				       | (TEXTURE_SIZE_256 << 20)
+				       | (TEXTURE_SIZE_256 << 23)
+				       | ((((uintptr_t)VRAM_B) >> 3) & 0xFFFF);
 
 			DrawCube();
 
@@ -239,10 +249,17 @@ int main(void)
 #ifdef USE_3D_MODE
 			vramSetBankC(VRAM_C_LCD);
 #endif
-			REG_DISPCAPCNT = DCAP_BANK(2) // Destination is VRAM_C
-				       | DCAP_SIZE(3) // Size is 256x192
-				       | DCAP_SRC(1)  // Source A = 3D screen
-				       | DCAP_ENABLE;
+			REG_DISPCAPCNT =
+				// Destination is VRAM_C
+				DCAP_BANK(DCAP_BANK_VRAM_C) |
+				// Size = 256x192
+				DCAP_SIZE(DCAP_SIZE_256x192) |
+				// Capture source A only
+				DCAP_MODE(DCAP_MODE_A) |
+				// Source A = 3D rendered image
+				DCAP_SRC_A(DCAP_SRC_A_3DONLY) |
+				// Enable capture
+				DCAP_ENABLE;
 
 			glViewport(0, 64, 128, 192);
 
@@ -260,9 +277,9 @@ int main(void)
 			// Green background
 			glClearColor(0, 31, 0, 31);
 
-			gluLookAt(0.0, 0.0, 1.0,	// camera position
-				  0.0, 0.0, 0.0,	// look at
-				  0.0, 1.0, 0.0);	// up
+			gluLookAt(0.0, 0.0, 1.0,	// Camera position
+				  0.0, 0.0, 0.0,	// Look at
+				  0.0, 1.0, 0.0);	// Up
 
 			// Move cube away from the camera
 			glTranslate3f32(0, 0, floattof32(-1));
