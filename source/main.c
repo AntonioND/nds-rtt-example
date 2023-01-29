@@ -194,7 +194,9 @@ int main(void)
 	float scale = 1;
 
 	while (1) {
-		// This is here because of no$gba
+		// The video syncronization has to be done before any work is done in a
+		// frame. This ensures that emulators and hardware have time to
+		// synchronize during the first frame. If not, screens may be switched.
 		swiWaitForVBlank();
 
 		scanKeys();
