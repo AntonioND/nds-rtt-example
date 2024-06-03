@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 //
-// Copyright (c) 2008, 2019, Antonio Niño Díaz
+// Copyright (c) 2008, 2019, 2024 Antonio Niño Díaz
 //
 // Render to Texture example
 //
@@ -13,9 +13,9 @@
 
 #include <nds.h>
 
-// texture_bin.h is created automagicaly from the texture.bin placed in
-// arm9/resources texture.bin is a raw 128x128 16 bit image.
-#include "texture_bin.h"
+// texture.h is created automagicaly from the texture.png and texture.grit files
+// the graphics folder.
+#include "texture.h"
 
 // When the following define is enabled, the demo uses MODE_5_3D. When it isn't,
 // it uses MODE_FB2.
@@ -151,15 +151,15 @@ int main(void)
 	consoleInit(NULL, 1, BgType_Text4bpp, BgSize_T_256x256, 15, 0, false,
 		    true);
 	BG_PALETTE_SUB[255] = 0xFFFF;
-	iprintf("     RTT Demo by AntonioND\n");
-	iprintf("\n");
-	iprintf("    http://www.skylyrac.net\n");
-	iprintf("\n");
-	iprintf("\n");
-	iprintf("\n");
-	iprintf("A/B: Scale small cube\n");
-	iprintf("Pad: Rotate small cube");
-	iprintf("\x1b[23;0HThanks to DiscoStew. ;)");
+	printf("     RTT Demo by AntonioND\n");
+	printf("\n");
+	printf("    http://www.skylyrac.net\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("A/B: Scale small cube\n");
+	printf("Pad: Rotate small cube");
+	printf("\x1b[23;0HThanks to DiscoStew. ;)");
 
 	glInit();
 
@@ -173,8 +173,12 @@ int main(void)
 
 	glGenTextures(1, &textureID);
 	glBindTexture(0, textureID);
-	glTexImage2D(0, 0, GL_RGB, TEXTURE_SIZE_128, TEXTURE_SIZE_128, 0,
-		     TEXGEN_TEXCOORD, (u8 *) texture_bin);
+	if (glTexImage2D(0, 0, GL_RGBA, 128, 128, 0, TEXGEN_TEXCOORD, textureBitmap) == 0)
+	{
+		printf("Failed to load texture\n");
+		while (1)
+			swiWaitForVBlank();
+	}
 
 	glMatrixMode(GL_TEXTURE);
 	glLoadIdentity();
